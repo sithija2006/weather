@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>කාලගුණය බලන්න</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <title>Your Weather App</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282c34;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        button, select {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #61dafb;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover, select:hover {
+            background-color: #21a1f1;
+        }
+        #weather-info, #rain-info {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #61dafb;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        #map {
+            height: 300px; /* Set the height of the map */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="animate__animated animate__fadeIn">කාලගුණය බලන්න</h1>
+    
+    <select id="districtSelect" class="animate__animated animate__fadeIn">
+        <option value="Colombo">Colombo</option>
+        <option value="Kandy">Kandy</option>
+        <option value="Galle">Galle</option>
+        <option value="Jaffna">Jaffna</option>
+        <option value="Matara">Matara</option>
+        <option value="Kurunegala">Kurunegala</option>
+        <option value="Gampaha">Gampaha</option>
+        <option value="Negombo">Negombo</option>
+        <option value="Nuwara Eliya">Nuwara Eliya</option>
+        <option value="Trincomalee">Trincomalee</option>
+        <option value="Batticaloa">Batticaloa</option>
+        <option value="Anuradhapura">Anuradhapura</option>
+        <option value="Polonnaruwa">Polonnaruwa</option>
+        <option value="Hambantota">Hambantota</option>
+        <option value="Badulla">Badulla</option>
+        <option value="Monaragala">Monaragala</option>
+        <option value="Mannar">Mannar</option>
+        <option value="Vavuniya">Vavuniya</option>
+        <option value="Kilinochchi">Kilinochchi</option>
+        <option value="Puttalam">Puttalam</option>
+        <option value="Kegalle">Kegalle</option>
+        <option value="Rathnapura">Rathnapura</option>
+        <option value="Dambulla">Dambulla</option>
+        <option value="Kalutara">Kalutara</option>
+        <option value="Mullaitivu">Mullaitivu</option>
+    </select>
+    
+    <button id="getWeather" class="animate__animated animate__pulse">කාලගුණය ලබා ගන්න</button>
+    <div id="weather-info" class="animate__animated"></div>
+    <div id="rain-info" class="animate__animated"></div>
+    <div id="map"></div> <!-- Map container -->
+</body>
+</html>
