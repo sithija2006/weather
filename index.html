@@ -1,85 +1,188 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>කාලගුණය බලන්න</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <title>Your Weather App</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="script.js" defer></script>
+    <title>Advanced Weather App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #282c34;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
+        /* Enhanced custom animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
-        button, select {
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #61dafb;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        button:hover, select:hover {
-            background-color: #21a1f1;
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
         }
-        #weather-info, #rain-info {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #61dafb;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.5s;
+
+        .gradient-background {
+            background: linear-gradient(270deg, #667eea, #764ba2, #6b8dd6, #8e37d7);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
         }
-        #map {
-            height: 300px; /* Set the height of the map */
-            margin-top: 20px;
+
+        .weather-card-shadow {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .weather-card-shadow:hover {
+            transform: scale(1.02);
+            box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
-<body>
-    <h1 class="animate__animated animate__fadeIn">කාලගුණය බලන්න</h1>
-    
-    <select id="districtSelect" class="animate__animated animate__fadeIn">
-        <option value="Colombo">Colombo</option>
-        <option value="Kandy">Kandy</option>
-        <option value="Galle">Galle</option>
-        <option value="Jaffna">Jaffna</option>
-        <option value="Matara">Matara</option>
-        <option value="Kurunegala">Kurunegala</option>
-        <option value="Gampaha">Gampaha</option>
-        <option value="Negombo">Negombo</option>
-        <option value="Nuwara Eliya">Nuwara Eliya</option>
-        <option value="Trincomalee">Trincomalee</option>
-        <option value="Batticaloa">Batticaloa</option>
-        <option value="Anuradhapura">Anuradhapura</option>
-        <option value="Polonnaruwa">Polonnaruwa</option>
-        <option value="Hambantota">Hambantota</option>
-        <option value="Badulla">Badulla</option>
-        <option value="Monaragala">Monaragala</option>
-        <option value="Mannar">Mannar</option>
-        <option value="Vavuniya">Vavuniya</option>
-        <option value="Kilinochchi">Kilinochchi</option>
-        <option value="Puttalam">Puttalam</option>
-        <option value="Kegalle">Kegalle</option>
-        <option value="Rathnapura">Rathnapura</option>
-        <option value="Dambulla">Dambulla</option>
-        <option value="Kalutara">Kalutara</option>
-        <option value="Mullaitivu">Mullaitivu</option>
-    </select>
-    
-    <button id="getWeather" class="animate__animated animate__pulse">කාලගුණය ලබා ගන්න</button>
-    <div id="weather-info" class="animate__animated"></div>
-    <div id="rain-info" class="animate__animated"></div>
-    <div id="map"></div> <!-- Map container -->
+<body class="gradient-background min-h-screen flex items-center justify-center">
+    <div class="container mx-auto py-8">
+        <h1 class="text-5xl font-extrabold mb-8 text-center text-white animate__animated animate__fadeInDown">
+            Sri Lanka Weather Explorer
+        </h1>
+        
+        <div class="text-center mb-6 animate__animated animate__fadeInUp">
+            <select id="district-selector" class="
+                bg-white text-gray-800 
+                border-4 border-purple-300 
+                rounded-full 
+                p-3 
+                text-xl 
+                font-semibold 
+                shadow-2xl 
+                focus:outline-none 
+                focus:ring-4 
+                focus:ring-purple-200 
+                transition-all 
+                duration-300
+                text-center
+            ">
+                <option value="Colombo">Colombo</option>
+                <option value="Kandy">Kandy</option>
+                <option value="Galle">Galle</option>
+                <option value="Jaffna">Jaffna</option>
+                <option value="Matara">Matara</option>
+                <option value="Kurunegala">Kurunegala</option>
+                <option value="Gampaha">Gampaha</option>
+                <option value="Negombo">Negombo</option>
+                <option value="Nuwara Eliya">Nuwara Eliya</option>
+                <option value="Trincomalee">Trincomalee</option>
+                <option value="Batticaloa">Batticaloa</option>
+                <option value="Anuradhapura">Anuradhapura</option>
+                <option value="Polonnaruwa">Polonnaruwa</option>
+                <option value="Hambantota">Hambantota</option>
+                <option value="Badulla">Badulla</option>
+                <option value="Monaragala">Monaragala</option>
+                <option value="Mannar">Mannar</option>
+                <option value="Vavuniya">Vavuniya</option>
+                <option value="Kilinochchi">Kilinochchi</option>
+                <option value="Puttalam">Puttalam</option>
+                <option value="Kegalle">Kegalle</option>
+                <option value="Rathnapura">Rathnapura</option>
+                <option value="Dambulla">Dambulla</option>
+                <option value="Kalutara">Kalutara</option>
+
+            </select>
+        </div>
+
+        <div id="weather-card" class="
+            bg-white bg-opacity-20 
+            backdrop-blur-lg 
+            p-8 
+            rounded-3xl 
+            shadow-2xl 
+            mx-auto 
+            max-w-md 
+            weather-card-shadow 
+            opacity-0 
+            transition-all 
+            duration-700
+            animate-float
+        ">
+            <h2 id="city" class="text-4xl font-bold mb-2 text-center text-white drop-shadow-lg"></h2>
+            <p id="description" class="text-2xl mb-3 text-center text-white font-medium capitalize"></p>
+            <p id="temperature" class="text-5xl text-center mb-4 text-white font-extrabold tracking-wide"></p>
+            <p id="humidity" class="text-xl text-center text-white opacity-80"></p>
+            <div id="weather-icon" class="flex justify-center mt-6 transform transition-transform duration-300 hover:scale-110"></div>
+        </div>
+    </div>
+
+    <script>
+        const openWeatherMapApiKey = "7660bcc6630bc79da321848ae4f9ff46"; 
+        
+        async function fetchWeather(city) {
+            try {
+                const data = await fetchOpenWeatherMap(city);
+                updateWeatherUI(data);
+            } catch (error) {
+                alert(`Error fetching weather: ${error.message}`);
+            }
+        }
+
+        async function fetchOpenWeatherMap(city) {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},LK&appid=${openWeatherMapApiKey}&units=metric`;
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                const errorDetails = await response.json();
+                console.error("OpenWeatherMap Error: ", errorDetails);
+                throw new Error(`OpenWeatherMap API error: ${errorDetails.message}`);
+            }
+
+            const data = await response.json();
+            return {
+                city: data.name,
+                description: data.weather[0].description,
+                temperature: data.main.temp,
+                humidity: data.main.humidity,
+                condition: data.weather[0].id,
+            };
+        }
+
+        function updateWeatherUI(data) {
+            document.getElementById('city').textContent = data.city;
+            document.getElementById('description').innerHTML = `${data.description} ${getEmoji(data.condition)}`;
+            document.getElementById('temperature').textContent = `${data.temperature.toFixed(1)}°C`;
+            document.getElementById('humidity').textContent = `Humidity: ${data.humidity}%`;
+
+            updateWeatherIcon(data.condition);
+
+            const weatherCard = document.getElementById('weather-card');
+            weatherCard.classList.remove("opacity-0");
+            weatherCard.classList.add("opacity-100");
+        }
+
+        function getEmoji(conditionCode) {
+            if (conditionCode >= 200 && conditionCode < 300) return "⛈️"; // Thunderstorm
+            if (conditionCode >= 300 && conditionCode < 600) return "🌧️"; // Rain
+            if (conditionCode >= 600 && conditionCode < 700) return "❄️"; // Snow
+            if (conditionCode === 800) return "☀️"; // Clear
+            if (conditionCode > 800) return "☁️"; // Clouds
+            return "🌡️"; // Default
+        }
+
+        function updateWeatherIcon(conditionCode) {
+            let iconHTML = "";
+            if (conditionCode === 800) {
+                iconHTML = `<svg class="w-24 h-24 text-yellow-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m3.343-5.657L5.636 5.636m12.728 12.728L18.364 18.364M12 7a5 5 0 110 10 5 5 0 010-10z" />
+                            </svg>`;
+            }
+            document.getElementById('weather-icon').innerHTML = iconHTML;
+        }
+
+        document.getElementById('district-selector').addEventListener('change', function () {
+            const district = this.value;
+            if (district) {
+                fetchWeather(district);
+            }
+        });
+    </script>
 </body>
 </html>
